@@ -1,5 +1,6 @@
 <template>
-  <div style="margin-bottom: 10px;" v-if="winner">The winner is {{ winner }}</div>
+  <div style="margin-bottom: 10px;" v-if="winner">The winner is {{ winner }}!</div>
+  <div style="margin-bottom: 10px;" v-if="ticArr.length === 9 && !winner">Draw!</div>
   <div class="wrapper" >
     <div v-for="index in 9" :key="index">
       <button @click="handleClick(index)" :disabled="!!winner">{{ ticArr[index-1]?.state }}</button>
