@@ -7,40 +7,68 @@
   <button @click="resetGame">Reset</button>
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue';
+<script lang="ts">
+import { defineComponent, reactive, Ref, watch } from 'vue';
 
-const cells = ref<string[]>(Array(9).fill(''));
-const currentPlayer = ref<string>('X');
-const winner = ref<string | null>(null);
-
-function handleClick(index: number) {
-  if (!cells.value[index] && !winner.value) {
-    cells.value[index] = currentPlayer.value;
-    checkWinner();
-    currentPlayer.value = currentPlayer.value === 'X' ? 'O' : 'X';
-  }
+interface TicTacToeState {
+  cells: string[];
+  currentPlayer: string;
+  winner: string | null;
 }
 
-function checkWinner() {
-  const winningCombos = ['012', '345', '678', '036', '147', '258', '048', '246'];
-  for (const combo of winningCombos) {
-    const [a, b, c] = combo.split('');
-    if (cells.value[+a] && cells.value[+a] === cells.value[+b] && cells.value[+b] === cells.value[+c]) {
-      winner.value = currentPlayer.value;
-      return;
-    }
-  }
-  if (!cells.value.includes('')) {
-    winner.value = 'Tie';
-  }
-}
+export default defineComponent({
+  setup() {
+    const state: TicTacToeState = reactive({
+      cells: Array(9).fill(''),
+      currentPlayer: 'X',
+      winner: null
+    });
 
-function resetGame() {
-  cells.value.fill('');
-  currentPlayer.value = 'X';
-  winner.value = null;
-}
+    const handleClick = (index: number): void => {
+      if (!state.cells[index] && !state.winner) {
+        state.cells[index] = state.currentPlayer;
+        checkWinner();
+        state.currentPlayer = state.currentPlayer === 'X' ? 'O' : 'X';
+      }
+    };
+
+    const checkWinner = (): void => {
+      const winningCombos = ['012', '345', '678', '036', '147', '258', '048', '246'];
+      for (const combo of winningCombos) {
+        const [a, b, c] = combo.split('');
+        if (state.cells[+a] && state.cells[+a] === state.cells[+b] && state.cells[+b] === state.cells[+c]) {
+          state.winner = state.currentPlayer;
+          return;
+        }
+      }
+      if (!state.cells.includes('')) {
+        state.winner = 'Tie';
+      }
+    };
+
+    const resetGame = (): void => {
+      state.cells.fill('');
+      state.currentPlayer = 'X';
+      state.winner = null;
+    };
+
+    watch(
+      () => state.winner,
+      (newValue: string | null) => {
+        if (newValue) {
+          console.log(`Congratulations, Player ${newValue} wins!`);
+        }
+      }
+    );
+
+    return {
+      cells: state.cells,
+      winner: state.winner,
+      handleClick,
+      resetGame
+    };
+  }
+});
 </script>
 
 <style scoped>
