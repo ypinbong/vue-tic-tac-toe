@@ -1,6 +1,6 @@
 <template>
   <div style="margin-bottom: 10px;" v-if="winner">The winner is {{ winner }}!</div>
-  <div style="margin-bottom: 10px;" v-if="ticArr.length === 9 && !winner">Draw!</div>
+  <div style="margin-bottom: 10px;" v-if="validTic.length === 9 && !winner">Draw!</div>
   <div class="wrapper" >
     <div v-for="index in 9" :key="index">
       <button @click="handleClick(index)" :disabled="!!winner">{{ ticArr[index-1]?.state }}</button>
@@ -38,7 +38,6 @@
         if (this.validTic.length < 5) return;
         const xMoves = this.validTic.filter(item => item.state === "X").map(item => item.index).sort((a, b) => a-b).join("");
         const oMoves = this.validTic.filter(item => item.state === "O").map(item => item.index).sort((a, b) => a-b).join("");
-        
         let hasWinner;
         if (xMoves.length >= 3) {
           hasWinner = this.hasWinningCombo(xMoves)
