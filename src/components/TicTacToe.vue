@@ -1,5 +1,6 @@
 <template>
-  <div id="app">
+  <div>
+    <dir class="title">{{ str }}</dir>
     <p v-if="winner === 'Tie'">It's a {{ winner }}</p>
     <p v-if="!!winner && winner !== 'Tie'">Congratulations, Player {{ winner }} wins!</p>
     <div class="wrapper">
@@ -11,6 +12,13 @@
 
 <script lang="ts">
   export default {
+    name: "TicTacToe",
+    props: {
+      str: {
+        type: String,
+        required: true,
+      } 
+    },
     data(){
       return{
         cells: Array(9).fill('') as string[],
@@ -18,6 +26,7 @@
         winner: null || '',
       }
     },
+    
     methods: {
       handleClick(index: number) {
         if (!this.cells[index] && !this.winner) {
@@ -30,7 +39,7 @@
         const winningCombos = ['012', '345', '678', '036', '147', '258', '048', '246'];
         for (const combo of winningCombos) {
           const [a, b, c] = combo.split('');
-          if (this.cells[a as unknown as number] && this.cells[a as unknown as number] === this.cells[b as unknown as number] && this.cells[b as unknown as number] === this.cells[c as unknown as number]) {
+          if (this.cells[+a] && this.cells[+a] === this.cells[+b] && this.cells[+b] === this.cells[+c]) {
             this.winner = this.currentPlayer;
             return;
           }
@@ -49,6 +58,10 @@
 </script>
 
 <style scoped>
+.title{
+  text-align: center;
+  padding: 0;
+}
 .wrapper{
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -57,5 +70,11 @@ button{
   color: white;
   width: 80px;
   height: 80px;
+}
+.player-1{
+  color: blue;
+}
+.player-2{
+  color: red;
 }
 </style>
