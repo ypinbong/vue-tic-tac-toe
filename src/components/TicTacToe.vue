@@ -13,7 +13,7 @@
   export default {
     data(){
       return{
-        cells: Array(9).fill(''),
+        cells: Array(9).fill('') as string[],
         currentPlayer: 'X',
         winner: null || '',
       }
@@ -30,7 +30,7 @@
         const winningCombos = ['012', '345', '678', '036', '147', '258', '048', '246'];
         for (const combo of winningCombos) {
           const [a, b, c] = combo.split('');
-          if (this.cells[a] && this.cells[a] === this.cells[b] && this.cells[b] === this.cells[c]) {
+          if (this.cells[a as unknown as number] && this.cells[a as unknown as number] === this.cells[b as unknown as number] && this.cells[b as unknown as number] === this.cells[c as unknown as number]) {
             this.winner = this.currentPlayer;
             return;
           }
