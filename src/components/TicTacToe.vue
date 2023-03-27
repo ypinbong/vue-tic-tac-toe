@@ -52,4 +52,10 @@ button{
   width: 80px;
   height: 80px;
 }
+.player-1 {
+    color: blue;
+  }
+.player-2 {
+  color: red;
+}
 </style>
